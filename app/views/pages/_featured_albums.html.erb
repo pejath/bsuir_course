@@ -1,0 +1,15 @@
+<div class="featured-albums my-12">
+  <h2 class="text-2xl font-semibold mb-6">Featured Albums</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <% albums.each do |album| %>
+      <div class="album-card bg-white shadow-lg rounded-lg overflow-hidden">
+        <%= image_tag album.cover_image, alt: album.title, class: 'w-full h-48 object-cover' if album.cover_image.attached? %>
+        <div class="p-4">
+          <h3 class="text-xl font-semibold"><%= album.title %></h3>
+          <p class="text-gray-600"><%= album.artist.name %></p>
+          <p class="text-sm text-gray-500">Released: <%= album.release_date.strftime('%B %d, %Y') %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="section recommended-tracks">
+  <h2>Recommended Tracks</h2>
+  <ul>
+    <% tracks.each do |track| %>
+      <li>
+        <%= track.title %> by <%= track.album.artist.name %> 
+        - Played <%= track.play_count %> times
+      </li>
+    <% end %>
+  </ul>
+</div>

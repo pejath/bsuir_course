@@ -1,0 +1,11 @@
+<div class="section popular-artists">
+  <h2>Popular Artists</h2>
+  <div class="artists-list">
+    <% artists.each do |artist| %>
+      <div class="artist-card">
+        <h3><%= artist.name %></h3>
+        <p><%= truncate(artist.bio, length: 100) %></p>
+      </div>
+    <% end %>
+  </div>
+</div>

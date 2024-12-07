@@ -13,6 +13,14 @@ module.exports = {
     chunkFormat: "module",
     path: path.resolve(__dirname, "app/assets/builds"),
   },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader", "postcss-loader"],
+      },
+    ],
+  },
   plugins: [
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
