@@ -1,0 +1,26 @@
+<aside class="w-80 border-l border-neutral-800 p-4">
+  <div class="space-y-6">
+    <!-- User Profile Section -->
+    <div class="text-sm">
+      <% if user_signed_in? %>
+        <div class="flex items-center space-x-3 mb-4">
+          <%= image_tag current_user.avatar.presence || "default_avatar.png", 
+              class: "w-8 h-8 object-cover",
+              alt: current_user.username %>
+          <div>
+            <p class="font-medium"><%= current_user.username %></p>
+            <p class="text-neutral-500 text-xs">Member since <%= current_user.created_at.strftime("%B %Y") %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Popular Tags -->
+    <div>
+      <h3 class="text-sm font-medium mb-3">Popular Tags</h3>
+      <div class="flex flex-wrap gap-2">
+
+      </div>
+    </div>
+  </div>
+</aside> 

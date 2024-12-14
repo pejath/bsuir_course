@@ -1,0 +1,9 @@
+<div class="flex items-center px-5 mb-5">
+  <%= form_tag root_path, method: :get, class: "w-full" do %>
+    <%= search_field_tag :q, 
+        params[:q],
+        placeholder: "Search by album, artist or track...",
+        class: "w-full px-4 py-2 text-neutral-900 focus:outline-none focus:ring-1 focus:ring-primary-500 bg-neutral-100" 
+    %>
+  <% end %>
+</div> 

@@ -21,4 +21,8 @@ class Track < ApplicationRecord
   def increment_play_count
     self.increment!(:play_count)
   end
+
+  def duration_formatted
+    "#{duration / 60}:#{duration % 60}"
+  end
 end

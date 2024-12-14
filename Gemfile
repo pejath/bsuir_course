@@ -18,7 +18,13 @@ gem "sassc-rails"
 gem "activeadmin", "~> 3.2"
 
 gem "tailwindcss", "~> 0.1.1"
+gem "tailwindcss-rails"
 
+gem 'unsplash'
+
+gem 'mediainfo'
+
+gem 'rexml'
 gem "faker", "~> 3.5"
 
 # Use the Puma web server [https://github.com/puma/puma]

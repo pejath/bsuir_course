@@ -4,6 +4,9 @@ Rails.application.routes.draw do
 
   resources :artists, only: [:index, :show]
   resources :albums do
+    member do
+      get 'sidebar_info'
+    end
     resources :reviews, only: [:create, :destroy]
   end
   resources :tracks, only: [:show] do
@@ -26,7 +29,9 @@ Rails.application.routes.draw do
     resources :comments, only: [:create, :destroy]
   end
     
-  devise_for :users
+  devise_for :users, controllers: {
+    registrations: 'users/registrations'
+  }
   root 'pages#home'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # Defines the root path route ("/")

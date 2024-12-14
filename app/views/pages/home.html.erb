@@ -1,28 +1,25 @@
-<div class="home-container flex flex-col items-center p-5 bg-gray-100">
-  <%= render 'pages/banner' %>
-
-  <div class="featured-albums w-full max-w-5xl mb-10">
-    <h2 class="text-2xl mb-2">Featured Albums</h2>
-    <%= render 'pages/featured_albums', albums: @featured_albums %>
-  </div>
-
-  <div class="popular-artists w-full max-w-5xl mb-10">
-    <h2 class="text-2xl mb-2">Popular Artists</h2>
-    <%= render 'pages/popular_artists', artists: @popular_artists %>
-  </div>
-
-  <div class="recommended-tracks w-full max-w-5xl mb-10">
-    <h2 class="text-2xl mb-2">Recommended Tracks</h2>
-    <%= render 'pages/recommended_tracks', tracks: @recommended_tracks %>
-  </div>
-
-  <div class="news w-full max-w-5xl mb-10">
-    <h2 class="text-2xl mb-2">News</h2>
-    <%= render 'pages/news', news: @news %>
-  </div>
-
-  <div class="stats text-lg text-gray-600 mt-5">
-    <p>Total Paid: $<%= number_with_delimiter(@stats[:total_paid]) %></p>
-    <p>Last Year: $<%= number_with_delimiter(@stats[:last_year]) %></p>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Webcrumbs Plugin</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    
+    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbolinks-track": "reload" %>
+  </head>
+  <body class="bg-neutral-900">
+    <div id="webcrumbs">
+      <div class="bg-neutral-900 text-neutral-50 flex">
+        <div class="flex-1">
+          <%= render 'shared/header' %>
+          <%= render 'shared/search' %>
+          <%= render 'shared/filters' %>
+          <%= render 'shared/albums_grid' %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

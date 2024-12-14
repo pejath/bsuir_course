@@ -6,6 +6,9 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 # Удаляем существующие данные перед добавлением новых
+require 'mediainfo'
+require 'rexml/document'
+
 Genre.destroy_all
 Playlist.destroy_all
 Track.destroy_all
@@ -22,14 +25,32 @@ AdminUser.create!(email: 'admin@band.com', password: 'password', password_confir
 # Создаем пользователей
 puts 'Creating users...'
 users = []
-User.create!(email: 'pejath@yandex.ru', password: 'password')
-5.times do
-  users << User.create!(
+u = User.create!(email: 'pejath@yandex.ru',username: 'pejath', password: 'password')
+
+image_url = Faker::LoremFlickr.image(size: "300x300")
+
+image_file = URI.open(image_url)
+
+u.avatar.attach(
+  io: image_file,
+  filename: "#{u.username.parameterize}.jpg",
+  content_type: 'image/jpeg'
+)
+
+5.times do |i|
+  user = User.create!(
     email: Faker::Internet.unique.email,
     password: 'password',
-    # username: Faker::Internet.username,
-    # role: %w[user artist].sample
+    username: "user_#{i + 1}",
+    # role: %w[user artist admin].sample
   )
+
+  user.avatar.attach(
+    io: File.open("app/assets/images/default_avatar.png"),
+    filename: "avatar_#{i + 1}.jpg",
+    content_type: 'image/jpeg'
+  )
+  users << user
 end
 
 # Создаем жанры
@@ -53,35 +74,68 @@ users.each do |user|
     profile_img: Faker::Avatar.image
   )
 end
+# Создаем теги
+puts 'Creating tags...'
+tags = []
+tags = 10.times.map do
+  tags << Tag.create!(name: Faker::Music.unique.genre)
+end
 
 # Создаем альбомы
 puts 'Creating albums...'
-albums = []
-artists.each do |artist|
-  3.times do
-    albums << Album.create!(
+albums = artists.flat_map do |artist|
+  3.times.map do
+    album = Album.create!(
       artist: artist,
       title: Faker::Music.album,
-      description: Faker::Lorem.paragraph,
-      release_date: Faker::Date.backward(days: 1000),
-      cover_image: nil # Можно загрузить случайную картинку позже через ActiveStorage
+      description: Faker::Lorem.paragraph(sentence_count: 3),
+      release_date: Faker::Date.between(from: 10.years.ago, to: Date.today)
     )
+
+    album.tags << tags.sample(rand(1..3))
+
+    image_url = Faker::LoremFlickr.image(size: "300x300")
+
+    image_file = URI.open(image_url)
+
+    album.cover_image.attach(
+      io: image_file,
+      filename: "#{album.title.parameterize}.jpg",
+      content_type: 'image/jpeg'
+    )
+
+    album
   end
 end
+
 
 # Создаем треки
 puts 'Creating tracks...'
 tracks = []
+audio_files = Dir[Rails.root.join('db/seeds/audio/*.mp3')]
+
 albums.each do |album|
-  5.times do |index|
+  4.times do |index|
+    audio_file = audio_files.pop
+    next unless audio_file
+
+    media_info = MediaInfo.from(audio_file)
+    duration = media_info.audio.duration.to_i / 1000
+
     track = Track.create!(
       album: album,
-      title: "Track #{index + 1} - #{album.title}",
-      duration: rand(120..300), # Длительность в секундах
+      title: media_info.general.title,
+      duration: duration, 
       price: rand(0..10).round(2),
       play_count: rand(0..1000)
     )
     tracks << track
+
+    track.audio_file.attach(
+      io: File.open(audio_file),
+      filename: File.basename(audio_file),
+      content_type: 'audio/mpeg'
+    )
 
     # Добавляем трек к случайным жанрам
     track.genres << genres.sample(rand(1..3))
@@ -118,13 +172,6 @@ puts 'Creating favorites...'
 users.each do |user|
   Favorite.create!(user: user, favoritable: albums.sample)
   Favorite.create!(user: user, favoritable: tracks.sample)
-end
-
-# Создаем теги
-puts 'Creating tags...'
-tags = []
-5.times do
-  tags << Tag.create!(name: Faker::Lorem.word)
 end
 
 # Связываем теги с треками

@@ -12,7 +12,7 @@ class User < ApplicationRecord
   has_many :comments
   has_many :notifications
   has_many :subscriptions
-
-  # validates :username, uniqueness: true, length: { maximum: 100 }
+  has_one_attached :avatar
+  validates :username, uniqueness: true, length: { maximum: 100 }
   # validates :role, inclusion: { in: %w[user artist admin] }
 end
