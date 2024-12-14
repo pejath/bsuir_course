@@ -22,34 +22,55 @@ User.destroy_all
 AdminUser.destroy_all
 AdminUser.create!(email: 'admin@band.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
 
+def fetch_random_image
+  url = URI('https://api.api-ninjas.com/v1/randomimage')
+  params = { height: 500, width: 500, category: "city" }
+  url.query = URI.encode_www_form(params)
+
+  http = Net::HTTP.new(url.host, url.port)
+  http.use_ssl = true
+
+  request = Net::HTTP::Get.new(url)
+  request['X-Api-Key'] = 'TQ23c1D+eR//rgQMdbCtkw==tF8FmAMf0dOvrs3i'  # Замените на ваш API ключ
+  request['Accept'] = 'image/jpg'
+
+  response = http.request(request)
+  
+  if response.code == '200'
+    return response.body
+  else
+    puts "Error fetching image: #{response.code} #{response.message}"
+    return nil
+  end
+end
+
 # Создаем пользователей
 puts 'Creating users...'
 users = []
 u = User.create!(email: 'pejath@yandex.ru',username: 'pejath', password: 'password')
 
-image_url = Faker::LoremFlickr.image(size: "300x300")
-
-image_file = URI.open(image_url)
-
-u.avatar.attach(
-  io: image_file,
-  filename: "#{u.username.parameterize}.jpg",
-  content_type: 'image/jpeg'
-)
+if image_data = fetch_random_image
+  u.avatar.attach(
+    io: StringIO.new(image_data),
+    filename: "#{u.username}_avatar.jpg",
+    content_type: 'image/jpeg'
+  )
+end
 
 5.times do |i|
   user = User.create!(
     email: Faker::Internet.unique.email,
     password: 'password',
     username: "user_#{i + 1}",
-    # role: %w[user artist admin].sample
   )
 
-  user.avatar.attach(
-    io: File.open("app/assets/images/default_avatar.png"),
-    filename: "avatar_#{i + 1}.jpg",
-    content_type: 'image/jpeg'
-  )
+  if image_data = fetch_random_image
+    user.avatar.attach(
+      io: StringIO.new(image_data),
+      filename: "user_#{i + 1}_avatar.jpg",
+      content_type: 'image/jpeg'
+    )
+  end
   users << user
 end
 
@@ -94,20 +115,17 @@ albums = artists.flat_map do |artist|
 
     album.tags << tags.sample(1)
 
-    image_url = Faker::LoremFlickr.image(size: "300x300")
-
-    image_file = URI.open(image_url)
-
-    album.cover_image.attach(
-      io: image_file,
-      filename: "#{album.title.parameterize}.jpg",
-      content_type: 'image/jpeg'
-    )
+    if image_data = fetch_random_image
+      album.cover_image.attach(
+        io: StringIO.new(image_data),
+        filename: "album_#{album.id}_cover.jpg",
+        content_type: 'image/jpeg'
+      )
+    end
 
     album
   end
 end
-
 
 # Создаем треки
 puts 'Creating tracks...'
@@ -137,8 +155,7 @@ albums.each do |album|
       content_type: 'audio/mpeg'
     )
 
-    # Добавляем трек к случайным жанрам
-    track.genres << genres.sample(1)
+    track.tags << album.tags
   end
 end
 

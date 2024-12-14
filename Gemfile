@@ -23,7 +23,7 @@ gem "tailwindcss-rails"
 gem 'turbo-rails'
 
 gem 'unsplash'
-
+gem 'kaminari'
 gem 'mediainfo'
 
 gem 'rexml'

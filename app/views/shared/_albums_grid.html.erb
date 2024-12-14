@@ -1,35 +1,22 @@
-<%= turbo_frame_tag "albums-grid" do %>
-  <div class="flex" data-controller="album-sidebar">
-    <div class="flex-1">
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
-        <% @albums.each do |album| %>
-          <div class="bg-neutral-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow" 
-               data-action="click->album-sidebar#showDetails"
-               data-album-id="<%= album.id %>">
-            <div class="aspect-square w-full">
-              <% if album.cover_image.attached? %>
-                <%= image_tag album.cover_image, 
-                    class: "w-full h-full object-cover",
-                    alt: album.title %>
-              <% else %>
-                <%= image_tag "https://tools-api.webcrumbs.org/image-placeholder/300/300/#{album.tags.first&.name || 'abstract'}/#{album.id}", 
-                    class: "w-full h-full object-cover",
-                    alt: album.title %>
-              <% end %>
-            </div>
-            
-            <div class="p-4">
-              <h3 class="text-base font-medium text-neutral-200 truncate"><%=link_to album.title, album_path(album) %></h3>
-              <p class="text-sm text-neutral-400 truncate"><%= album.artist.name %></p>
-              <p class="text-xs text-neutral-500 mt-1">
-                <%= album.tags.first&.name || 'uncategorized' %>
-              </p>
-            </div>
-          </div>
-        <% end %>
-      </div>
+<div class="flex" data-controller="album-sidebar">
+  <div class="flex-1" data-controller="pagination">
+    <div id="albums-container" data-pagination-target="container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
+      <% @albums.each do |album| %>
+        <%= render "shared/album_card", album: album %>
+      <% end %>
     </div>
 
-    <%= render 'shared/album_sidebar' %>
+    <% if @albums.next_page %>
+      <div class="flex justify-center py-8">
+        <button data-pagination-target="loadMoreButton"
+                data-action="click->pagination#loadMore"
+                data-turbo="false"
+                class="px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors">
+          Load More
+        </button>
+      </div>
+    <% end %>
   </div>
-<% end %> 
+
+  <%= render 'shared/album_sidebar' %>
+</div> 

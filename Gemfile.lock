@@ -320,6 +320,7 @@ DEPENDENCIES
   faker (~> 3.5)
   jbuilder
   jsbundling-rails
+  kaminari
   mediainfo
   pg (~> 1.1)
   pg_search

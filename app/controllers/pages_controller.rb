@@ -20,12 +20,21 @@ class PagesController < ApplicationController
     @albums = albums.order(created_at: :desc).page(params[:page]).per(12)
     
     respond_to do |format|
-      # format.html { render partial: "shared/albums_grid", locals: { albums: @albums } }
       format.turbo_stream do
-        render turbo_stream: turbo_stream.update("albums-grid", 
-          partial: "shared/albums_grid", 
-          locals: { albums: @albums }
-        )
+        if params[:page].to_i > 1
+          render turbo_stream: [
+            turbo_stream.append("container", partial: "shared/album_card", collection: @albums, as: :album),
+            turbo_stream.replace("load-more-button", 
+              partial: "shared/load_more_button", 
+              locals: { has_more: @albums.next_page.present? }
+            )
+          ]
+        else
+          render turbo_stream: turbo_stream.update("albums-grid", 
+            partial: "shared/albums_grid", 
+            locals: { albums: @albums }
+          )
+        end
       end
     end
   end
