@@ -20,6 +20,8 @@ gem "activeadmin", "~> 3.2"
 gem "tailwindcss", "~> 0.1.1"
 gem "tailwindcss-rails"
 
+gem 'turbo-rails'
+
 gem 'unsplash'
 
 gem 'mediainfo'

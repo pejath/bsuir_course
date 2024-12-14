@@ -1,33 +1,35 @@
-<div class="flex" data-controller="album-sidebar">
-  <div class="flex-1">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
-      <% @albums.each do |album| %>
-        <div class="bg-neutral-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow" 
-             data-action="click->album-sidebar#showDetails"
-             data-album-id="<%= album.id %>">
-          <div class="aspect-square w-full">
-            <% if album.cover_image.attached? %>
-              <%= image_tag album.cover_image, 
-                  class: "w-full h-full object-cover",
-                  alt: album.title %>
-            <% else %>
-              <%= image_tag "https://tools-api.webcrumbs.org/image-placeholder/300/300/#{album.tags.first&.name || 'abstract'}/#{album.id}", 
-                  class: "w-full h-full object-cover",
-                  alt: album.title %>
-            <% end %>
+<%= turbo_frame_tag "albums-grid" do %>
+  <div class="flex" data-controller="album-sidebar">
+    <div class="flex-1">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
+        <% @albums.each do |album| %>
+          <div class="bg-neutral-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow" 
+               data-action="click->album-sidebar#showDetails"
+               data-album-id="<%= album.id %>">
+            <div class="aspect-square w-full">
+              <% if album.cover_image.attached? %>
+                <%= image_tag album.cover_image, 
+                    class: "w-full h-full object-cover",
+                    alt: album.title %>
+              <% else %>
+                <%= image_tag "https://tools-api.webcrumbs.org/image-placeholder/300/300/#{album.tags.first&.name || 'abstract'}/#{album.id}", 
+                    class: "w-full h-full object-cover",
+                    alt: album.title %>
+              <% end %>
+            </div>
+            
+            <div class="p-4">
+              <h3 class="text-base font-medium text-neutral-200 truncate"><%=link_to album.title, album_path(album) %></h3>
+              <p class="text-sm text-neutral-400 truncate"><%= album.artist.name %></p>
+              <p class="text-xs text-neutral-500 mt-1">
+                <%= album.tags.first&.name || 'uncategorized' %>
+              </p>
+            </div>
           </div>
-          
-          <div class="p-4">
-            <h3 class="text-base font-medium text-neutral-200 truncate"><%=link_to album.title, album_path(album) %></h3>
-            <p class="text-sm text-neutral-400 truncate"><%= album.artist.name %></p>
-            <p class="text-xs text-neutral-500 mt-1">
-              <%= album.tags.first&.name || 'uncategorized' %>
-            </p>
-          </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
-  </div>
 
-  <%= render 'shared/album_sidebar' %>
-</div> 
+    <%= render 'shared/album_sidebar' %>
+  </div>
+<% end %> 

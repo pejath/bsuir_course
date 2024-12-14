@@ -77,7 +77,7 @@ end
 # Создаем теги
 puts 'Creating tags...'
 tags = []
-tags = 10.times.map do
+tags = 12.times.map do
   tags << Tag.create!(name: Faker::Music.unique.genre)
 end
 
@@ -92,7 +92,7 @@ albums = artists.flat_map do |artist|
       release_date: Faker::Date.between(from: 10.years.ago, to: Date.today)
     )
 
-    album.tags << tags.sample(rand(1..3))
+    album.tags << tags.sample(1)
 
     image_url = Faker::LoremFlickr.image(size: "300x300")
 
@@ -138,7 +138,7 @@ albums.each do |album|
     )
 
     # Добавляем трек к случайным жанрам
-    track.genres << genres.sample(rand(1..3))
+    track.genres << genres.sample(1)
   end
 end
 
@@ -177,7 +177,7 @@ end
 # Связываем теги с треками
 puts 'Tagging tracks...'
 tracks.each do |track|
-  track.tags << tags.sample(rand(1..3))
+  track.tags << tags.sample(1)
 end
 
 # Создаем подписки

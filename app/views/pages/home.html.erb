@@ -17,7 +17,10 @@
           <%= render 'shared/header' %>
           <%= render 'shared/search' %>
           <%= render 'shared/filters' %>
-          <%= render 'shared/albums_grid' %>
+          
+          <%= turbo_frame_tag "albums-grid" do %>
+            <%= render 'shared/albums_grid' %>
+          <% end %>
         </div>
       </div>
     </div>

@@ -26,7 +26,7 @@
         <span>•</span>
         <span><%= @album.tracks.count %> tracks</span>
         <span>•</span>
-        <span><%= @album.tags.map(&:name).join(', ') %></span>
+        <span><%= @album.tags.map(&:name).uniq.join(', ') %></span>
       </div>
 
       <%# Описание %>
