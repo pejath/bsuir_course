@@ -13,6 +13,9 @@ class User < ApplicationRecord
   has_many :notifications
   has_many :subscriptions
   has_one_attached :avatar
-  validates :username, uniqueness: true, length: { maximum: 100 }
+  validates :username, presence: true, 
+                      uniqueness: { case_sensitive: false },
+                      format: { with: /\A[a-zA-Z0-9_]+\z/, message: "only allows letters, numbers and underscores" },
+                      length: { minimum: 3, maximum: 30 }
   # validates :role, inclusion: { in: %w[user artist admin] }
 end

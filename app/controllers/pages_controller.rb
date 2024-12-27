@@ -12,13 +12,13 @@ class PagesController < ApplicationController
       tag_ids = params[:genres].split(',')
       albums = albums.joins(:tags).where(tags: { id: tag_ids }).distinct
     end
-    
+
     if @query.present?
       albums = albums.search_by_all(@query)
     end
     
     @albums = albums.order(created_at: :desc).page(params[:page]).per(12)
-    
+
     respond_to do |format|
       format.turbo_stream do
         if params[:page].to_i > 1
@@ -30,10 +30,11 @@ class PagesController < ApplicationController
             )
           ]
         else
-          render turbo_stream: turbo_stream.update("albums-grid", 
-            partial: "shared/albums_grid", 
-            locals: { albums: @albums }
-          )
+          render turbo_stream: turbo_stream.remove("albums-grid")
+          # render turbo_stream: turbo_stream.replace("albums-grid", 
+          #   partial: "shared/albums_grid", 
+          #   locals: { albums: @albums }
+          # )
         end
       end
     end

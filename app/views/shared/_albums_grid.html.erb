@@ -1,5 +1,5 @@
-<div class="flex" data-controller="album-sidebar">
-  <div class="flex-1" data-controller="pagination">
+<turbo-frame id="albums-grid" class="flex" data-controller="album-sidebar pagination">
+  <div class="flex-1">
     <div id="albums-container" data-pagination-target="container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
       <% @albums.each do |album| %>
         <%= render "shared/album_card", album: album %>
@@ -8,9 +8,8 @@
 
     <% if @albums.next_page %>
       <div class="flex justify-center py-8">
-        <button data-pagination-target="loadMoreButton"
+        <button data-pagination-target="loadMore"
                 data-action="click->pagination#loadMore"
-                data-turbo="false"
                 class="px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors">
           Load More
         </button>
@@ -19,4 +18,4 @@
   </div>
 
   <%= render 'shared/album_sidebar' %>
-</div> 
+</turbo-frame> 
