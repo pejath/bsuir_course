@@ -15,7 +15,13 @@ module.exports = {
         },
         'neutral': {
           // ... цвета из исходного файла
-        }
+        },
+        'text-base': '#d1d1d1',
+        'text-link': '#e5e5e5',
+      },
+      textColor: {
+        'link': '#e5e5e5',
+        'link-hover': '#ffffff',
       }
     }
   }

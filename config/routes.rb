@@ -37,4 +37,5 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   post 'filter_albums', to: 'pages#filter_albums'
+  get 'profile', to: 'users#profile'
 end

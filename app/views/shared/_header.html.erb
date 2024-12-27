@@ -4,14 +4,14 @@
   </div>
   <div class="flex items-center space-x-4">
     <% if user_signed_in? %>
-      <div class="flex items-center space-x-3">
+      <%= link_to profile_path, class: "flex items-center space-x-3 hover:opacity-80 transition-opacity" do %>
         <%= image_tag current_user.avatar.presence || "default_avatar.png", 
             class: "w-8 h-8 rounded-full object-cover",
             alt: current_user.username %>
         <div class="text-sm">
           <p class="font-medium"><%= current_user.username %></p>
         </div>
-      </div>
+      <% end %>
     <% else %>
       <%= link_to "sign up", new_user_session_url, class: "text-neutral-500 hover:text-neutral-50" %>
       <%= link_to "log in", new_user_registration_url, class: "text-neutral-500 hover:text-neutral-50" %>

@@ -1,0 +1,60 @@
+<div class="container mx-auto px-4 py-8">
+  <%# Секция профиля %>
+  <div class="mb-12">
+    <div class="flex items-center space-x-4">
+      <div class="w-24 h-24 rounded-full overflow-hidden">
+        <%= image_tag current_user.avatar.presence || "default_avatar.png", 
+            class: "w-full h-full object-cover",
+            alt: current_user.username %>
+      </div>
+      <div>
+        <h1 class="text-2xl font-bold text-neutral-100"><%= current_user.username %></h1>
+        <p class="text-neutral-400">Member since <%= current_user.created_at.strftime("%B %Y") %></p>
+      </div>
+    </div>
+  </div>
+
+  <%# Секция избранных альбомов %>
+  <div class="mb-12">
+    <h2 class="text-xl font-semibold text-neutral-200 mb-6">Favorite Albums</h2>
+    <% if @favorite_albums.any? %>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <% @favorite_albums.each do |album| %>
+          <%= render 'shared/album_card', album: album %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-neutral-400">No favorite albums yet</p>
+    <% end %>
+  </div>
+
+  <%# Секция плейлистов %>
+  <div>
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-xl font-semibold text-neutral-200">Your Playlists</h2>
+      <%= link_to new_playlist_path, 
+          class: "px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors", style: "color: #e5e5e5;" do %>
+        <i class="fas fa-plus mr-2"></i> Create Playlist
+      <% end %>
+    </div>
+
+    <% if @playlists.any? %>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <% @playlists.each do |playlist| %>
+          <div class="bg-neutral-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+            <div class="p-4">
+              <h3 class="text-lg font-medium text-neutral-200 mb-2">
+                <%= link_to playlist.title, playlist_path(playlist) %>
+              </h3>
+              <p class="text-sm text-neutral-400">
+                <%= pluralize(playlist.tracks.count, 'track') %>
+              </p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-neutral-400">No playlists created yet</p>
+    <% end %>
+  </div>
+</div> 
