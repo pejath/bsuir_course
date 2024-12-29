@@ -15,7 +15,7 @@
   
   <div class="p-4">
     <h3 class="text-base font-medium text-neutral-200 truncate">
-      <%= link_to album.title, album_path(album) %>
+      <%= link_to album.title, album_path(album), data: { turbo: false } %>
     </h3>
     <p class="text-sm text-neutral-400 truncate"><%= album.artist.name %></p>
     <p class="text-xs text-neutral-500 mt-1">

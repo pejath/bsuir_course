@@ -27,13 +27,30 @@ class PlaylistsController < ApplicationController
   end
 
   def add_track
-    @playlist = current_user.playlists.find(params[:playlist_id])
+    @playlist = current_user.playlists.find(params[:id])
     @track = Track.find(params[:track_id])
 
     if @playlist.tracks << @track
       render json: { message: 'Track added to playlist successfully' }
     else
       render json: { error: 'Failed to add track to playlist' }, status: :unprocessable_entity
+    end
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: 'You are not authorized to modify this playlist' }, status: :unauthorized
+  end
+
+  def remove_track
+    @playlist = Playlist.find(params[:id])
+    
+    if @playlist.user == current_user
+      @track = Track.find(params[:track_id])
+      if @playlist.tracks.delete(@track)
+        render json: { message: 'Track removed from playlist successfully' }
+      else
+        render json: { error: 'Failed to remove track from playlist' }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: 'You are not authorized to modify this playlist' }, status: :unauthorized
     end
   end
 

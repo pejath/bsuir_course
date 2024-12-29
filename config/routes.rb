@@ -38,5 +38,4 @@ Rails.application.routes.draw do
   # root "articles#index"
   post 'filter_albums', to: 'pages#filter_albums'
   get 'profile', to: 'users#profile'
-  post 'playlists/add_track', to: 'playlists#add_track'
 end

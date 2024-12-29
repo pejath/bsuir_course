@@ -98,6 +98,14 @@
                       data-action="click->track-menu#addToPlaylist">
                 <i class="fas fa-plus mr-2"></i> Add to Playlist
               </button>
+
+              <% if @playlist.user == current_user %>
+                <button class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-neutral-700"
+                        data-action="click->track-menu#removeFromPlaylist"
+                        data-playlist-id="<%= @playlist.id %>">
+                  <i class="fas fa-minus mr-2"></i> Remove from Playlist
+                </button>
+              <% end %>
             </div>
           </div>
         </div>

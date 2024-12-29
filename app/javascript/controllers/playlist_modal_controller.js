@@ -39,14 +39,13 @@ export default class extends Controller {
     const playlistId = event.currentTarget.dataset.playlistId
     
     try {
-      const response = await fetch('/playlists/add_track', {
+      const response = await fetch(`/playlists/${playlistId}/add_track`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
         },
         body: JSON.stringify({
-          playlist_id: playlistId,
           track_id: this.trackIdValue
         })
       })
