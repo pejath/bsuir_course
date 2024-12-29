@@ -8,6 +8,7 @@ class Track < ApplicationRecord
   has_many :genres, through: :track_genres
   has_many :comments, dependent: :destroy
   has_many :purchases
+  has_one :artist, through: :album
 
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings

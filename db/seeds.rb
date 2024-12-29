@@ -165,7 +165,8 @@ users.each do |user|
   2.times do
     playlist = Playlist.create!(
       user: user,
-      title: Faker::Lorem.sentence(word_count: 3)
+      title: Faker::Lorem.sentence(word_count: 3),
+      description: Faker::Lorem.paragraph(sentence_count: 3)
     )
     playlist.tracks << tracks.sample(rand(5..10))
   end

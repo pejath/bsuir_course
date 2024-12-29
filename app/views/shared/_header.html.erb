@@ -1,6 +1,8 @@
 <header class="flex items-center justify-between px-5 py-4">
   <div class="text-2xl font-title">
-    <span class="text-primary-500">bandcamp</span>
+    <%= link_to root_path do %>
+      <span class="text-primary-500">bandcamp</span>
+    <% end %>
   </div>
   <div class="flex items-center space-x-4">
     <% if user_signed_in? %>

@@ -1,0 +1,33 @@
+<div id="playlist-modal" 
+     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
+     data-controller="playlist-modal">
+  <div class="bg-neutral-800 rounded-lg p-6 w-full max-w-md">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-medium text-neutral-200">Add to Playlist</h3>
+      <button data-action="playlist-modal#close" class="text-neutral-400 hover:text-neutral-300">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="space-y-2 max-h-96 overflow-y-auto">
+      <% current_user.playlists.each do |playlist| %>
+        <button class="w-full text-left px-4 py-3 rounded-md hover:bg-neutral-700 transition-colors flex items-center justify-between"
+                data-action="click->playlist-modal#addToPlaylist"
+                data-playlist-id="<%= playlist.id %>">
+          <span class="text-neutral-200"><%= playlist.title %></span>
+          <span class="text-sm text-neutral-400"><%= pluralize(playlist.tracks.count, 'track') %></span>
+        </button>
+      <% end %>
+    </div>
+
+    <div class="mt-4 pt-4 border-t border-neutral-700">
+      <%= link_to new_playlist_path, 
+          class: "w-full flex items-center justify-center px-4 py-2 rounded-md bg-neutral-700 hover:bg-neutral-600 transition-colors" do %>
+        <i class="fas fa-plus mr-2"></i>
+        <span>Create New Playlist</span>
+      <% end %>
+    </div>
+  </div>
+</div> 

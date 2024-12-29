@@ -1,2 +1,41 @@
-<h1>Playlists#new</h1>
-<p>Find me in app/views/playlists/new.html.erb</p>
+<%= render 'shared/header' %>
+
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-2xl font-bold text-neutral-100 mb-8">Create New Playlist</h1>
+
+    <%= form_with(model: @playlist, class: "space-y-6") do |f| %>
+      <% if @playlist.errors.any? %>
+        <div class="bg-red-500 bg-opacity-10 border border-red-500 rounded-md p-4 mb-6">
+          <h2 class="text-red-500 text-sm font-medium mb-2">
+            <%= pluralize(@playlist.errors.count, "error") %> prohibited this playlist from being saved:
+          </h2>
+          <ul class="list-disc list-inside text-red-400 text-sm">
+            <% @playlist.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div>
+        <%= f.label :title, class: "block text-sm font-medium text-neutral-200 mb-2" %>
+        <%= f.text_field :title, 
+            class: "w-full rounded-md bg-neutral-800 border-neutral-700 text-neutral-200 focus:ring-indigo-500 focus:border-indigo-500" %>
+      </div>
+
+      <div>
+        <%= f.label :description, class: "block text-sm font-medium text-neutral-200 mb-2" %>
+        <%= f.text_area :description, rows: 4,
+            class: "w-full rounded-md bg-neutral-800 border-neutral-700 text-neutral-200 focus:ring-indigo-500 focus:border-indigo-500" %>
+      </div>
+
+      <div class="flex justify-end space-x-4">
+        <%= link_to "Cancel", profile_path, 
+            class: "px-4 py-2 rounded-md border border-neutral-700 text-neutral-300 hover:bg-neutral-800" %>
+        <%= f.submit "Create Playlist", 
+            class: "px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors" %>
+      </div>
+    <% end %>
+  </div>
+</div>
