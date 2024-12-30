@@ -112,4 +112,13 @@
 
   <%= render 'shared/player_bar', tracks: tracks_data %>
   <%= render 'shared/playlist_modal' %>
+
+  <button class="px-4 py-2 bg-neutral-700 text-white rounded-md hover:bg-neutral-600 transition-colors"
+          data-controller="favorite"
+          data-action="click->favorite#toggle"
+          data-favorite-album-id-value="<%= @album.id %>"
+          data-favorite-state-value="<%= current_user.favorited_album?(@album) %>">
+    <i class="fas <%= current_user.favorited_album?(@album) ? 'fa-heart text-red-500' : 'fa-heart-o' %>"></i>
+    <span class="ml-2"><%= current_user.favorited_album?(@album) ? 'Remove from Favorites' : 'Add to Favorites' %></span>
+  </button>
 </div>

@@ -21,11 +21,14 @@
       </div>
     </div>
 
-    <button class="w-full py-2 px-4 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-md flex items-center justify-center space-x-2">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-      </svg>
-      <span>Add to Favorites</span>
+    <button class="w-full py-2 px-4 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded-md flex items-center justify-center space-x-2"
+            data-controller="favorite"
+            data-action="click->favorite#toggle"
+            data-favorite-album-id-value=""
+            data-favorite-state-value="false"
+            data-album-sidebar-target="favoriteButton">
+      <i class="fas fa-heart-o"></i>
+      <span class="ml-2">Add to Favorites</span>
     </button>
   </div>
 </div> 

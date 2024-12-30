@@ -7,6 +7,7 @@ import FiltersController from "./filters_controller"
 import PaginationController from "./pagination_controller"
 import TrackMenuController from "./track_menu_controller"
 import PlaylistModalController from "./playlist_modal_controller"
+import FavoriteController from "./favorite_controller"
 
 application.register("dropdown", DropdownController)
 application.register("album", AlbumController)
@@ -15,4 +16,5 @@ application.register("bottom-player", BottomPlayerController)
 application.register("filters", FiltersController)
 application.register("pagination", PaginationController)
 application.register("track-menu", TrackMenuController)
-application.register("playlist-modal", PlaylistModalController) 
+application.register("playlist-modal", PlaylistModalController)
+application.register("favorite", FavoriteController) 

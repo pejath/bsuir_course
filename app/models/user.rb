@@ -18,4 +18,8 @@ class User < ApplicationRecord
                       format: { with: /\A[a-zA-Z0-9_]+\z/, message: "only allows letters, numbers and underscores" },
                       length: { minimum: 3, maximum: 30 }
   # validates :role, inclusion: { in: %w[user artist admin] }
+
+  def favorited_album?(album)
+    favorite_albums.include?(album)
+  end
 end

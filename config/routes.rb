@@ -18,7 +18,11 @@ Rails.application.routes.draw do
       delete :remove_track
     end
   end
-  resources :favorites, only: [:create, :destroy]
+  resources :favorites, only: [:create] do
+    collection do
+      delete :destroy
+    end
+  end
   resources :purchases, only: [:index]
   resources :notifications, only: [:index, :update]
   resources :tracks do

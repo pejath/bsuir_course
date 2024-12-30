@@ -22,21 +22,19 @@ class AlbumsController < ApplicationController
   end
 
   def sidebar_info
-    album = Album.find(params[:id])
-    sample_track = album.tracks.first
+    @album = Album.find(params[:id])
+    sample_track = @album.tracks.first
 
-    response_data = {
-      cover_url: album.cover_image.attached? ? 
-        rails_blob_path(album.cover_image) : 
-        "https://tools-api.webcrumbs.org/image-placeholder/300/300/#{album.tags.first&.name || 'abstract'}/#{album.id}",
-      title: album.title,
-      artist_name: album.artist.name,
+    render json: {
+      id: @album.id,
+      title: @album.title,
+      artist_name: @album.artist.name,
+      cover_url: @album.cover_image.attached? ? 
+        rails_blob_path(@album.cover_image) : 
+        "https://tools-api.webcrumbs.org/image-placeholder/300/300/#{@album.tags.first&.name || 'abstract'}/#{@album.id}",
       sample_track_name: sample_track&.title || "No tracks available",
-      audio_file_url: sample_track&.audio_file&.attached? ? rails_blob_path(sample_track.audio_file) : nil
+      audio_file_url: sample_track&.audio_file&.attached? ? rails_blob_path(sample_track.audio_file) : nil,
+      is_favorited: current_user.favorited_album?(@album)
     }
-
-    Rails.logger.debug "Sending sidebar info: #{response_data.inspect}"
-    
-    render json: response_data
   end
 end
