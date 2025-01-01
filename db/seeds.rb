@@ -206,4 +206,130 @@ users.each do |user|
   end
 end
 
+# Создаем мерч для разных артистов и альбомов
+puts "Creating merchandise..."
+
+def attach_image(merchandise, filename)
+  path = Rails.root.join('lib', 'assets', 'merch_images', filename)
+  merchandise.images.attach(io: File.open(path), filename: filename)
+end
+
+# Vinyl Records
+Artist.all.each do |artist|
+  artist.albums.each do |album|
+    merch = Merchandise.create!(
+      title: "#{album.title} Vinyl",
+      description: "Limited edition vinyl record of #{album.title}",
+      price: rand(25.0..45.0).round(2),
+      merchandise_type: 'vinyl',
+      artist: artist,
+      album: album,
+      featured: [true, false].sample
+    )
+    attach_image(merch, 'vinyl.jpg')
+    
+    MerchandiseVariant.create!(
+      merchandise: merch,
+      stock: rand(10..50)
+    )
+  end
+end
+
+# CDs
+Artist.all.each do |artist|
+  artist.albums.each do |album|
+    merch = Merchandise.create!(
+      title: "#{album.title} CD",
+      description: "CD version of #{album.title}",
+      price: rand(10.0..20.0).round(2),
+      merchandise_type: 'cd',
+      artist: artist,
+      album: album,
+      featured: [true, false].sample
+    )
+    attach_image(merch, 'cd.jpg')
+    
+    MerchandiseVariant.create!(
+      merchandise: merch,
+      stock: rand(20..100)
+    )
+  end
+end
+
+# Cassettes
+Artist.all.each do |artist|
+  artist.albums.sample(2).each do |album|
+    merch = Merchandise.create!(
+      title: "#{album.title} Cassette",
+      description: "Retro cassette version of #{album.title}",
+      price: rand(8.0..15.0).round(2),
+      merchandise_type: 'cassette',
+      artist: artist,
+      album: album,
+      featured: [true, false].sample
+    )
+    attach_image(merch, 'cassette.jpg')
+    
+    MerchandiseVariant.create!(
+      merchandise: merch,
+      stock: rand(5..30)
+    )
+  end
+end
+
+# T-Shirts
+SHIRT_COLORS = ['Black', 'White', 'Navy', 'Gray']
+SHIRT_SIZES = ['S', 'M', 'L', 'XL', 'XXL']
+
+Artist.all.each do |artist|
+  # Artist T-Shirts
+  merch = Merchandise.create!(
+    title: "#{artist.name} Logo T-Shirt",
+    description: "Official #{artist.name} band t-shirt",
+    price: rand(20.0..35.0).round(2),
+    merchandise_type: 'tshirt',
+    artist: artist,
+    featured: [true, false].sample
+  )
+  attach_image(merch, 'tshirt.jpg')
+  
+  SHIRT_COLORS.each do |color|
+    SHIRT_SIZES.each do |size|
+      MerchandiseVariant.create!(
+        merchandise: merch,
+        color: color,
+        size: size,
+        stock: rand(5..20)
+      )
+    end
+  end
+
+  # Album T-Shirts (только для некоторых альбомов)
+  artist.albums.sample(2).each do |album|
+    merch = Merchandise.create!(
+      title: "#{album.title} Album T-Shirt",
+      description: "T-shirt featuring artwork from #{album.title}",
+      price: rand(20.0..35.0).round(2),
+      merchandise_type: 'tshirt',
+      artist: artist,
+      album: album,
+      featured: [true, false].sample
+    )
+    attach_image(merch, 'album_tshirt.jpg')
+    
+    SHIRT_COLORS.each do |color|
+      SHIRT_SIZES.each do |size|
+        MerchandiseVariant.create!(
+          merchandise: merch,
+          color: color,
+          size: size,
+          stock: rand(5..20)
+        )
+      end
+    end
+  end
+end
+
+puts "Created #{Merchandise.count} merchandise items with #{MerchandiseVariant.count} variants"
+
 puts 'Seeding completed!'

@@ -6,6 +6,7 @@ class Album < ApplicationRecord
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings
   has_one_attached :cover_image
+  has_many :merchandises
 
   validates :title, presence: true, length: { maximum: 150 }
   validates :description, length: { maximum: 1000 }, allow_blank: true

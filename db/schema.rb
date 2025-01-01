@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_08_073944) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_01_120902) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -115,6 +115,33 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_08_073944) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "merchandise_variants", force: :cascade do |t|
+    t.bigint "merchandise_id", null: false
+    t.string "size"
+    t.string "color"
+    t.integer "stock", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["merchandise_id", "size", "color"], name: "index_merchandise_variants_on_merchandise_id_and_size_and_color", unique: true
+    t.index ["merchandise_id"], name: "index_merchandise_variants_on_merchandise_id"
+  end
+
+  create_table "merchandises", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.decimal "price", precision: 8, scale: 2, null: false
+    t.string "merchandise_type", null: false
+    t.bigint "artist_id", null: false
+    t.bigint "album_id"
+    t.boolean "featured", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["album_id"], name: "index_merchandises_on_album_id"
+    t.index ["artist_id"], name: "index_merchandises_on_artist_id"
+    t.index ["featured"], name: "index_merchandises_on_featured"
+    t.index ["merchandise_type"], name: "index_merchandises_on_merchandise_type"
   end
 
   create_table "news", force: :cascade do |t|
@@ -253,6 +280,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_08_073944) do
   add_foreign_key "comments", "tracks"
   add_foreign_key "comments", "users"
   add_foreign_key "favorites", "users"
+  add_foreign_key "merchandise_variants", "merchandises"
+  add_foreign_key "merchandises", "albums"
+  add_foreign_key "merchandises", "artists"
   add_foreign_key "notifications", "users"
   add_foreign_key "orders", "users"
   add_foreign_key "playlist_tracks", "playlists"
